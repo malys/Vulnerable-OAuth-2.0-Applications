@@ -16,7 +16,7 @@ Now that we know what OAuth 2.0 is typically used for, we elaborate on the major
 A major design decision is deciding which flows to support. This largely depends on the type of clients the application supports. [Auth0 provides an excellent flow chart that helps making a good  decision](https://auth0.com/docs/api-auth/which-oauth-flow-to-use). In summary, if the *Client* is:
 
 - A classic web application, use the Authorization Code Grant.
-- A single page application, use the Implicit Grant.
+- A single page application,  use the [Authorization Code Grant Public with PKCE](https://tools.ietf.org/html/rfc7636).
 - A native mobile application, use the [Authorization Code Grant with PKCE](https://tools.ietf.org/html/rfc7636).
 - A client that is absolutely trusted with user credentials (i.e. the Facebook app accessing Facebook), use the Resource Owner Password Grant.
 - A client that is the owner of the data, use the Client Credentials Grant.

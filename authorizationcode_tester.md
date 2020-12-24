@@ -3,6 +3,7 @@
 In this section, we describe how you can exploit the common mistakes made when designing/implementing an OAuth 2.0 enabled application. This section lists a subset of what is listed in [RFC 6819](https://tools.ietf.org/html/rfc6819).
 
 - [Tester: Exploit Mistakes](#tester-exploit-mistakes)
+  - [Prerequisites](#prerequisites)
   - [Authorization Endpoint: Validate the RedirectURI Parameter](#authorization-endpoint-validate-the-redirecturi-parameter)
   - [Authorization Endpoint: Generate Strong Authorization Codes](#authorization-endpoint-generate-strong-authorization-codes)
   - [Authorization Endpoint: Expire Unused Authorization Codes](#authorization-endpoint-expire-unused-authorization-codes)
@@ -23,12 +24,28 @@ In this section, we describe how you can exploit the common mistakes made when d
   - [OAuth 2.0 Client: Store Access and Refresh Tokens Securely](#oauth-20-client-store-access-and-refresh-tokens-securely)
   - [Checklist](#checklist)
 
+## Prerequisites
+
+* Docker/Docker-compose
+* [Burp suite](https://chocolatey.org/packages/burp-suite-free-edition) or [OWASP ZAPorxy](https://chocolatey.org/packages/zap)
+* Httpie or curl
+
 ## [Authorization Endpoint: Validate the RedirectURI Parameter](https://tools.ietf.org/html/rfc6819#section-4.2.4)
 
 If the authorization server does not validate that the redirect URI belongs to the client, it is susceptible to two types of attacks.
 
 - [Open Redirect](https://tools.ietf.org/html/rfc6819#section-4.2.4) enables attackers to redirect the victim to a site of their liking.
     ![Attacker redirects the victim the victim to a random site.](./pics/openredirect.gif)
+
+```
+# Should be invalid
+http --follow http://gallery:3005/oauth/authorize?response_type=code&redirect_uri=http%3A%2F%2Fwww.synopsys.com&scope=view_gallery&client_id=photoprint
+# Keycloak
+http --follow "http://localhost:8180/auth/realms/master/protocol/openid-connect/auth?client_id=security-admin-console&redirect_uri=http://www.google.com&state=798465b1-2d7f-4d1f-926c-fba8113b3956&nonce=b71908fa-4b10-4c78-8eb6-dce132ad1ea9&response_mode=fragment&response_type=code&scope=openid"
+-> 400:Invalid parameter: redirect_uri
+```
+
+
 - Account hijacking by stealing authorization codes. If an attacker redirects to a site under their control, the authorization code - which is part of the URI - is given to them. They may be able to exchange it for an access token and thus get access to the user's resources (if the client credentials are compromised or not necessary).
     ![Attacker steals a valid authorization code from the victim.](./pics/openredirect_stealauthzcode.gif)
 

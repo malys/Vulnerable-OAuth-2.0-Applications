@@ -6,12 +6,18 @@ To run the applications:
 
 ## Docker
 
-1. Execute docker compose
+1. Edit your hosts file to include photoprint and gallery ([Windows](https://support.rackspace.com/how-to/modify-your-hosts-file/), [Linux](https://vitux.com/linux-hosts-file/), [Mac OSX](https://www.imore.com/how-edit-your-macs-hosts-file-and-why-you-would-want)). If you want to check some of the attacks, also add attacker.
+
+    ```bash
+    127.0.0.1           gallery photoprint attacker mongodb localhost
+    ```
+
+2. Execute docker compose
 
     ```bash
     docker-compose up
     ```
-2. Connect with VNC to port 5900 of localhost and a pwd of `secret`, start firefox, and browse to [http://photoprint:3000](http://photoprint:3000) .
+3. Browse to [http://photoprint:3000](http://photoprint:3000) .
 
 ## Manually
 

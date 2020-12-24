@@ -1,4 +1,4 @@
-# Single Page Application: Implicit Grant Flow
+# Single Page Application: Implicit Grant Flow (deprecated see Authorization Code Grant Flow + PKCE)
 
 The implicit grant is a simplified authorization code flow in which the client
 is issued an access token directly at the authorization endpoint, rather than
